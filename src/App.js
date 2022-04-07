@@ -19,6 +19,7 @@ function App() {
           <Link to="/">
             <h1>App</h1>
           </Link>
+          
 
           <GifContextProvider>
             <Route
