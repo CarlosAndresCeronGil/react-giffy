@@ -1,8 +1,8 @@
 import { useState } from "react";
 import {API_KEY, API_URL} from './settings'
 
-export default function getGifs({ keyword = 'panda' } = {}) {
-  const apiURL = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=10&offset=0&rating=g&lang=en`;
+export default function getGifs({limit = 5, keyword = 'panda', page = 0 } = {}) {
+  const apiURL = `${API_URL}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${(page * limit)+1}&rating=g&lang=en`;
 
   return fetch(apiURL)
     .then((res) => res.json())

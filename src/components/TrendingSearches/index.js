@@ -1,23 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
-import getTrendingTerms from "../../services/getTrendingTermsService";
-import Category from "../Category";
+import React, { Suspense, useRef } from "react";
 import useNearScreen from "../../hooks/useNearScreen";
 
-function TrendingSearches() {
-    const [trends, setTrends] = useState([])
-
-    useEffect(function() {
-        getTrendingTerms().then(setTrends)
-    }, [])
-
-    return <Category title="Tendencias" options={trends}/>
-}
+//Con react.lazy descargara este fichero js solo cuando se le necesite
+//Para que funcione bien se agrega el Suspense que aparece abajo en el return
+const TrendingSearches = React.lazy(
+    () => import('./TrendingSearches')
+)
 
 export default function LazyTrending() {
-    const elementRef = useRef()
+    const elementRef = useRef() 
     const isNearScreen = useNearScreen({elementRef})
 
     return <div ref={elementRef}>
-        {isNearScreen ? <TrendingSearches /> : null }
+        <Suspense fallback={'Estoy cargando . . . '}>
+            {isNearScreen ? <TrendingSearches /> : null }
+        </Suspense>
     </div>
 }
