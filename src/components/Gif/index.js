@@ -2,7 +2,7 @@ import React from "react";
 import './Gif.css'
 import { Link } from "wouter";
 
-export default function index({ title, id, url }) {
+function index({ title, id, url }) {
   return (
     <Link to={`/gif/${id}`} className="Gif">
       {/* <h4>{title}</h4> */}
@@ -10,3 +10,7 @@ export default function index({ title, id, url }) {
     </Link>
   );
 }
+
+export default React.memo(index, (prevProps, nextProps) => {
+  return prevProps.id === nextProps.id
+})

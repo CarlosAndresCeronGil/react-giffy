@@ -1,42 +1,35 @@
-import { useState } from "react";
+import React, { Suspense, useState } from "react";
 import "./App.css";
 import ListOfGifs from "./components/ListOfGifs";
 
-import Home from "./pages/Home";
-import SearchResults from './pages/SearchResults/index'
-import Detail from './pages/Detail'
+import SearchResults from "./pages/SearchResults/index";
+import Detail from "./pages/Detail";
 
-import StaticContext from './context/StaticContext'
+import StaticContext from "./context/StaticContext";
 
 import { Link, Route } from "wouter";
 import { GifContextProvider } from "./context/GifsContext";
 
+const HomePage = React.lazy(() => import("./pages/Home"));
+
 function App() {
   return (
-    <StaticContext.Provider value={{name: 'andres', lastName: 'Ceron'}}>
+    <StaticContext.Provider value={{ name: "andres", lastName: "Ceron" }}>
       <div className="App">
-        <section className="App-content">
-          <Link to="/">
-            <h1>App</h1>
-          </Link>
-          
+        <Suspense fallback={null}>
+          <section className="App-content">
+            <Link to="/">
+              <h1>App</h1>
+            </Link>
 
-          <GifContextProvider>
-            <Route
-              component={Home}
-              path="/"
-            />
-            <Route 
-              component={SearchResults}
-              path="/search/:keyword"
-            />
-            <Route 
-              component={Detail}
-              path="/gif/:id"
-            />
-          </GifContextProvider>
-
-        </section>
+            <GifContextProvider>
+              <Route component={HomePage} path="/" />
+              <Route component={SearchResults} path="/search/:keyword" />
+              <Route component={Detail} path="/gif/:id" />
+              <Route component={() => <h1>404 ERROR :(</h1>} path="/404" />
+            </GifContextProvider>
+          </section>
+        </Suspense>
       </div>
     </StaticContext.Provider>
   );
